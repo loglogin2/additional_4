@@ -1,12 +1,7 @@
 module.exports = function multiply(first, second) {
     // your solution
-    var c ;
-    var ans = '';
-    var o = 0;
-    var ret = '' ;
-    var nols = '';
 
-    function reverse(str) {
+    function reverse( str ) {
         var ret = '';
 
         for ( var i = str.length - 1 ; i >= 0 ; i-- )
@@ -15,33 +10,59 @@ module.exports = function multiply(first, second) {
         return ret;
     }
 
-    function sum_long(s,f){
-        var o = 0;
-        ans = '';
+    function sum_long( a , b ){
+        var overflow = 0;
+        var ret = '';
 
-        if ( f.length < s.length )
+        if ( a.length < b.length )
         {
-            var tmp = f;
-            f = s;
-            s = tmp;
+            var tmp = a;
+            a = b;
+            b = tmp;
         }
 
-        while ( f.length != s.length)
+        while ( a.length != b.length)
         {
-            s += '0';
+            b += '0';
         }
 
-        for ( var i = 0 ; i < s.length ; i ++ )
+        for ( var i = 0 ; i < b.length ; i ++ )
         {
-            var g = ( +f[i] + +s[i] + o ) % 10 ;
-            o = Math.floor( ( +f[i] + +s[i] + o ) / 10 );
-            ans += g ;
+            var number = ( +a[i] + +b[i] + overflow ) % 10 ;
+            overflow = Math.floor( ( +a[i] + +b[i] + overflow ) / 10 );
+            ret += number ;
         }
 
-        if ( o > 0 )
-            ans += o;
+        if ( overflow > 0 )
+            ret += overflow;
 
-        return ans
+        return ret;
+    }
+
+    function mult_long( a , b) {
+        var str = '';
+        var zeros = '';
+        var overflow = 0;
+        var ret = '';
+
+        for ( var i = 0; i < b.length; i++ ) {
+            str = '';
+            str = zeros;
+            zeros += 0;
+
+            for ( var j = 0; j < a.length; j++ ) {
+                var number = ( ( +b[i] * +a[j] ) + overflow ) % 10;
+                overflow = Math.floor(( +b[i] * +a[j] + overflow) / 10);
+                str += number;
+            }
+
+            if (overflow > 0)
+                str += overflow;
+
+            overflow = 0;
+            ret = sum_long(ret, str);
+        }
+        return ret;
     }
 
     if ( first.length < second.length )
@@ -51,31 +72,11 @@ module.exports = function multiply(first, second) {
         second = tmp;
     }
 
-    var a = reverse( first );
-    var b = reverse( second );
+    first = reverse( first );
+    second = reverse( second );
 
-    for ( var i = 0 ; i < b.length ; i ++ )
-    {
-        ans = '';
-        ans = nols;
-        nols += 0;
+    return  reverse( mult_long( first , second ) );
 
-        for ( var j = 0 ; j < a.length; j++ )
-        {
-            c =( ( +b[i] * +a[j] ) + o ) % 10;
-            o = Math.floor( ( +b[i] * +a[j] + o) / 10 );
-            ans += c;
-        }
-
-        if( o > 0 )
-            ans += o;
-
-        o = 0;
-        ret = sum_long(ret,ans);
-    }
-
-    ans = reverse(ret);
-    return ans;
 }
 
 
